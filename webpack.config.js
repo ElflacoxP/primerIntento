@@ -1,3 +1,4 @@
+const miniCssExtractPlugin = require('mini-css-extract-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const path = require('path')
 
@@ -9,9 +10,46 @@ const cssRule = {
 
 const scssRule = {
     test: /\.s[ac]ss$/i,
-    use: ['style-loader', 'css-loader','sass-loader'],
+    use: [{
+        loader: miniCssExtractPlugin.loader,
+    } , {
+        loader: 'css-loader',
+    }, {
+        loader: 'postcss-loader',
+        options: {
+            postcssOptions: {
+                plugins: [
+                    [
+                        "postcss-preset-env",
+                        {
+                            options: {
+        plugins: function () {
+                return [
+                    require('precss'),
+                    require('autoprefixer')
+                ];
+            }
+        }
+                        }
+                    ]
+                ]
+            }
+        }
+        
+    }, {
+        loader: 'sass-loader'
+    }]
 }
 
+
+const devSvConfig = {
+    static: path.resolve(__dirname, 'dist'),
+    historyApiFallback: true,
+    hot: true,
+    open: true,
+    port: 3000,
+    compress: true
+}
 
 const jsRule = {    
         test: /\.js$/,
@@ -45,14 +83,11 @@ module.exports = (env, argv) => {
     plugins: [
         new HtmlWebpackPlugin({
             template: './src/index.html'
-        })
+        }),
+        new miniCssExtractPlugin()
     ],
     module: { rules },
-    devServer: {
-        open: true,
-        port: 3000,
-        compress: true
-    },
+    devServer: devSvConfig,
     devtool: 'source-map'
     }
 }
