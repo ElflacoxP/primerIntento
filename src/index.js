@@ -1,10 +1,14 @@
 import { createRoot } from 'react-dom/client'
-import ReactDOM from 'react-dom'
-import App from './App'
+import 'bootstrap/dist/css/bootstrap.min.css'
+
 import './styles.scss'
-import 'bootstrap'
+import App from './App'
 
 document.body.innerHTML = '<div id="app"></div>'
+
+window.addEventListener('hashchange', () => {
+    console.log(window.location.hash)
+})
 
 const root = createRoot(document.getElementById('app'))
 root.render(<App />)
