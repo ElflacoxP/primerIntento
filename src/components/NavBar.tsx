@@ -1,10 +1,10 @@
 import 'react-bootstrap'
 import { Button, FormControl } from 'react-bootstrap'
-import Navbar from 'react-bootstrap/Navbar'
-const NavBar = () => (
 
+
+const NavBar = () => (
 <div className="navbar fixed-top bg-dark">
-        <nav className="navbar bg-body-dark">
+        <nav className="navbar">
             <ul className="nav justify-content-center">
                 <li className="nav-item">
                 <a className="nav-link active" aria-current="page" href="#/">Home</a>
@@ -20,12 +20,13 @@ const NavBar = () => (
         <div className='d-flex-end'>
             <form className="d-flex">
                 <FormControl
+                    id="form"
                     type="search"
                     placeholder="Search"
                     className="me-2"
                     aria-label="Search"
                 />
-                <Button variant="outline-success">Search</Button>
+                <Button variant="outline-primary">Search</Button>
             </form>
         </div>
     </div>

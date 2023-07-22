@@ -1,12 +1,13 @@
-const miniCssExtractPlugin = require('mini-css-extract-plugin')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
 const path = require('path')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const miniCssExtractPlugin = require('mini-css-extract-plugin')
 
+
+//module rules
 const cssRule = {
     test: /\.css$/i,
     use: ['style-loader', 'css-loader']
 }
-
 
 const scssRule = {
     test: /\.s[ac]ss$/i,
@@ -23,38 +24,27 @@ const scssRule = {
                         "postcss-preset-env",
                         {
                             options: {
-        plugins: function () {
-                return [
-                    require('precss'),
-                    require('autoprefixer')
-                ];
-            }
-        }
+                                plugins: function () {
+                                    return [
+                                        require('precss'),
+                                        require('autoprefixer')
+                                    ];
+                                }
+                            }
                         }
                     ]
                 ]
             }
         }
-        
     }, {
         loader: 'sass-loader'
     }]
 }
 
-
-const devSvConfig = {
-    static: path.resolve(__dirname, 'dist'),
-    historyApiFallback: true,
-    hot: true,
-    open: true,
-    port: 3000,
-    compress: true
-}
-
 const jsRule = {    
-        test: /\.js$/,
-        loader: 'babel-loader',
-        options: {
+    test: /\.(js|jsx)$/,
+    loader: 'babel-loader',
+    options: {
             presets: [
                 [
                     '@babel/preset-react',
@@ -66,14 +56,27 @@ const jsRule = {
         },
 }
 
-const rules = [jsRule, cssRule, scssRule]
+const tsRule ={ 
+        test: /\.(ts|tsx)$/, 
+        loader: "ts-loader" 
+}
+
+const jpgRule = {
+    test: /\.(?:ico|gif|png|jpg|jpeg)$/i,
+    type: 'asset/resource'
+}
+
+const svgRule = {
+    test: /\.(woff(2)?|eot|ttf|otf|svg|)$/,
+    type: 'asset/inline'
+}
+
+const rules = [jsRule, tsRule, cssRule, scssRule, jpgRule, svgRule]
 
 
-module.exports = (env, argv) => {
-    const {mode} = argv
-    const isProduction = mode === 'production'
-    return {
-    entry: './src/index.js',
+//Module
+module.exports = {
+    entry: path.resolve(__dirname,'../index.js'),
     output: {
         filename: isProduction
         ? '[name].[contenthash].js'
@@ -82,12 +85,12 @@ module.exports = (env, argv) => {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template: './src/index.html'
+            template: '../index.html'
         }),
         new miniCssExtractPlugin()
     ],
     module: { rules },
-    devServer: devSvConfig,
-    devtool: 'source-map'
+    resolve: {
+        extensions: ["*", ".js", ".jsx", ".ts", ".tsx"],    
     }
 }

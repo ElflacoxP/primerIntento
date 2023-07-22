@@ -4,17 +4,24 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "webpack --mode=production",
-    "dev": "webpack serve --mode=development",
+    "build": "webpack -c webpack/webpack.config.js --env env=prod",
+    "dev": "webpack serve -c webpack/webpack.config.js --env env=dev",
+    "lint": "eslint --fix\"./src/**/*.{js,jsx,ts,tsx,json}\"",
+    "format": "prettier --write \"./src/**/*.{js,jsx,ts,tsx,json,css,scss,md}\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
+  "author": "Leonardo",
   "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.22.9",
     "@babel/preset-react": "^7.22.5",
+    "@pmmmwh/react-refresh-webpack-plugin": "^0.5.10",
     "@popperjs/core": "^2.11.8",
+    "@types/jest": "^29.5.3",
+    "@types/node": "^20.4.3",
+    "@types/react": "^18.2.15",
+    "@types/react-dom": "^18.2.7",
     "autoprefixer": "^10.4.14",
     "babel-loader": "^9.1.3",
     "bootstrap": "^5.3.0",
@@ -25,12 +32,28 @@
     "postcss-loader": "^7.3.3",
     "postcss-preset-env": "^9.0.0",
     "react-bootstrap": "^2.8.0",
+    "react-responsive-carousel": "^3.2.23",
     "sass": "^1.63.6",
     "sass-loader": "^13.3.2",
     "style-loader": "^3.3.3",
+    "ts-loader": "^9.4.4",
     "webpack": "^5.88.1",
     "webpack-cli": "^5.1.4",
-    "webpack-dev-server": "^4.15.1"
+    "webpack-dev-server": "^4.15.1",
+    "webpack-merge": "^5.9.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,ts,tsx,json}": [
+      "eslint --fix"
+    ],
+    "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
+      "prettier --write"
+    ]
   },
   "dependencies": {
     "react": "18.2.0",
